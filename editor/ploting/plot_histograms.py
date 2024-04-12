@@ -14,8 +14,8 @@ def plot_histograms(hists, histogram_per_row: int = 3):
         fig.add_trace(_get_3d_scatter_plot_from_histogram(hist), row=1, col=i)
 
     fig.update_layout(
-        width=1200,
-        height=600,
+        showlegend=False,
+        autosize=True,
         scene1=dict(xaxis_title="R", yaxis_title="G", zaxis_title="B"),
         scene2=dict(xaxis_title="R", yaxis_title="G", zaxis_title="B"),
     )
