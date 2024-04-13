@@ -61,11 +61,12 @@ class HistogramDataset(Dataset):
 
         edited = random_edit(original, seed=idx)
 
-        original_histogram = compute_histogram(
-            original, bins=self._bin_count, normalize=True
-        )
         edited_histogram = compute_histogram(
             edited, bins=self._bin_count, normalize=True
+        )
+
+        original_histogram = compute_histogram(
+            original, bins=self._bin_count, normalize=True
         )
 
         result = (
