@@ -15,12 +15,19 @@ def plot_histograms_in_3d(
         cols=cols,
         specs=[[{"type": "scatter3d"} for _ in range(cols)] for _ in range(rows)],
     )
+
     for i, (title, histogram) in enumerate(histograms.items()):
         fig.add_trace(
             _get_3d_scatter_plot_from_histogram(title, histogram),
             row=(i // (histogram_per_row + 1)) + 1,
             col=(i % histogram_per_row) + 1,
         )
+
+    scenes = {
+        f"scene{i}": dict(camera=dict(eye=dict(x=0.1, y=0, z=2)))
+        for i in range(1, len(histograms) + 1)
+    }
+    fig.update_layout(**scenes)
     fig.show()
 
 
@@ -48,7 +55,8 @@ def _get_3d_scatter_plot_from_histogram(title, histogram):
                 f"rgb({xi*256/bins},{yi*256/bins},{zi*256/bins})"
                 for xi, yi, zi in zip(x, y, z)
             ],
-            opacity=0.8,
+            opacity=1,
+            line=dict(width=0),
         ),
         name=title,
     )
