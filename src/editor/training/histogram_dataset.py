@@ -24,6 +24,8 @@ class HistogramDataset(Dataset):
         cache_path: Optional[Path] = None,
     ):
         self._paths = sorted(paths)
+        logging.info(f"Loaded {len(self._paths)} original images")
+
         self._edit_count = edit_count
         self._bin_count = bin_count
         self._target_size = target_size
