@@ -15,13 +15,13 @@ MODELS = {
     # "v1": v1,
     "SimpleCNN": SimpleCNN,
     "Residual": Residual,
-    "NormalisedCNN": NormalisedCNN,
-    "SmartRes": SmartRes,
+    # "NormalisedCNN": NormalisedCNN,
+    # "SmartRes": SmartRes,
     # "AttentionNet": AttentionNet,
-    "attention2": EnhancedAestheticHistogramNet,
-    "advanced_attention": advanced_attention,
-    "Res2": Res2,
-    "attention1": PhotoEnhanceNetAdvanced,
+    # "attention2": EnhancedAestheticHistogramNet,
+    # "advanced_attention": advanced_attention,
+    # "Res2": Res2,
+    # "attention1": PhotoEnhanceNetAdvanced,
 }
 
 
