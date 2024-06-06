@@ -13,7 +13,7 @@ import torch
 
 MODELS = {
     # "v1": v1,
-    "SimpleCNN": SimpleCNN,
+    # "SimpleCNN": SimpleCNN,
     "Residual": Residual,
     # "NormalisedCNN": NormalisedCNN,
     # "SmartRes": SmartRes,
