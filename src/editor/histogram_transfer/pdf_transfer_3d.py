@@ -14,6 +14,7 @@ def pdf_transfer_3d(
     bin_count: int = 1000,
     iterations: int = 25,
     smoothness: float = 1,
+    should_regrain: bool = True,
 ):
     [h, w, c] = source.shape
     source_flattened = source.reshape(-1, c).transpose()
@@ -43,4 +44,4 @@ def pdf_transfer_3d(
         source_flattened.clip(0, 255, out=source_flattened)
 
     result = source_flattened.astype(np.uint8).transpose().reshape(h, w, c)
-    return regrain(source, result, smoothness=smoothness)
+    return regrain(source, result, smoothness=smoothness) if should_regrain else result

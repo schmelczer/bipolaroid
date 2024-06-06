@@ -8,7 +8,7 @@ def display_images(images: Dict[str, Image], images_per_row: int = 3):
     fig, axes = plt.subplots(
         nrows=ceil(len(images) / images_per_row),
         ncols=min(images_per_row, len(images)),
-        figsize=(12, 8),
+        figsize=(24, 16),
     )
 
     axes = axes.flatten()

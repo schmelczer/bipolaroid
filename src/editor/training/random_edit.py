@@ -9,6 +9,7 @@ def random_edit(img: Image, seed: int = 42) -> Image:
     img = add_noise(img, random(0, 0.2))
     img = ImageEnhance.Contrast(img).enhance(random(0.5, 2))
     img = add_random_colour_spill(img, 1.3)
+
     img = img.convert("HSV")
     saturation_lut = get_colour_lut(variance=0.3, count=5, type="linear")
     brightness_lut = get_colour_lut(variance=0.3, count=5, type="cubic")

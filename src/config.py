@@ -1,7 +1,7 @@
 from pathlib import Path
 
 DATA = sorted(Path("/mnt/wsl/PHYSICALDRIVE1/data/unsplash").glob("*.jpg"))
-TRAIN_SIZE = 0.8
+TRAIN_SIZE = 0.9
 
 CACHE_PATH = Path("/mnt/wsl/PHYSICALDRIVE1/data/cache")
 CACHE_PATH.mkdir(exist_ok=True, parents=True)
