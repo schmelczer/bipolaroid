@@ -24,7 +24,12 @@ def plot_histograms_in_3d(
         )
 
     scenes = {
-        f"scene{i}": dict(camera=dict(eye=dict(x=0.1, y=0, z=2)))
+        f"scene{i}": dict(
+            camera=dict(eye=dict(x=0.1, y=0, z=2)),
+            xaxis=go.layout.scene.XAxis(title="Red"),
+            yaxis=go.layout.scene.YAxis(title="Green"),
+            zaxis=go.layout.scene.ZAxis(title="Blue"),
+        )
         for i in range(1, len(histograms) + 1)
     }
     fig.update_layout(**scenes)
