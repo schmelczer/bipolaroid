@@ -4,11 +4,11 @@ from PIL.Image import Image
 from math import ceil
 
 
-def display_images(images: Dict[str, Image], images_per_row: int = 3):
+def display_images(images: Dict[str, Image], images_per_row: int = 3, figsize=(24, 16)):
     fig, axes = plt.subplots(
         nrows=ceil(len(images) / images_per_row),
         ncols=min(images_per_row, len(images)),
-        figsize=(24, 16),
+        figsize=figsize,
     )
 
     axes = axes.flatten()

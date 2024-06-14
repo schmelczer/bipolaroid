@@ -4,8 +4,8 @@ import numpy as np
 from typing import Dict
 
 
-def plot_histograms_in_2d(histograms: Dict[str, np.ndarray]):
-    fig = plt.figure(figsize=(15, 5))
+def plot_histograms_in_2d(histograms: Dict[str, np.ndarray], figsize=(15, 5)):
+    fig = plt.figure(figsize=figsize)
 
     for i, (title, histogram) in enumerate(histograms.items(), 1):
         ax = fig.add_subplot(1, 3, i, projection="3d")
