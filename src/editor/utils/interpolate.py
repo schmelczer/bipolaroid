@@ -9,8 +9,6 @@ INTERPOLATION_TYPE = Literal["cubic", "linear"]
 def interpolate(
     control_points: List[float], t: float, type: INTERPOLATION_TYPE
 ) -> float:
-    control_points = sorted(control_points)
-
     if type == "cubic":
         x = np.linspace(0, 1, len(control_points))
         cs = CubicSpline(x, control_points)
