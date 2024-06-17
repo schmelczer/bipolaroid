@@ -1,6 +1,7 @@
 {
   "files.exclude": {
     "**/__pycache__": true,
-    "runs": true
-  }
+  },
+  "editor.formatOnSave": true,
+  "notebook.formatOnCellExecution": true
 }
