@@ -1,6 +1,6 @@
 import numpy as np
 from typing import List
-from .random import random
+from ..utils.random import random
 from .interpolate import interpolate, INTERPOLATION_TYPE
 
 
