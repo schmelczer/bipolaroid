@@ -16,11 +16,11 @@ def get_random_saturation_per_hue_lut(
 
 
 def get_random_brightness_lut(
-    variance: float = 0.2,
+    variance: float = 0.1,
     count: int = 6,
     type: INTERPOLATION_TYPE = "linear",
-    min_spectrum_size: float = 0.6,
-    max_spectrum_size: float = 1.15,
+    min_spectrum_size: float = 0.7,
+    max_spectrum_size: float = 1.1,
 ) -> List[int]:
     spectrum_size = np.random.uniform(min_spectrum_size, max_spectrum_size)
     spectrum_start = np.random.uniform(0, max(0, 1 - spectrum_size))
@@ -29,9 +29,9 @@ def get_random_brightness_lut(
             spectrum_start,
             *[
                 spectrum_start
-                + i * spectrum_size / (count - 2)
+                + i * spectrum_size / (count - 1)
                 + np.random.uniform(-variance, variance)
-                for i in range(1, count - 2)
+                for i in range(1, count - 1)
             ],
             spectrum_start + spectrum_size,
         ]
