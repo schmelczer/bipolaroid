@@ -16,10 +16,8 @@ def random_edit(img: Image, seed: int = 42) -> Image:
     np.random.seed(seed)
     img = img.convert("RGB")
 
-    img = adjust_gamma(img, get_random_gamma())
-    img = add_noise(img, random(0, 0.1))
     img = ImageEnhance.Contrast(img).enhance(random(0.5, 1.5))
-    img = add_random_colour_spill(img, 0.2)
+    img = adjust_gamma(img, get_random_gamma())
 
     img = img.convert("HSV")
     saturation_lut = get_random_saturation_per_hue_lut()
@@ -28,5 +26,8 @@ def random_edit(img: Image, seed: int = 42) -> Image:
         img, lambda h, s, v: (h, round(s * saturation_lut[h]), brightness_lut[v])
     )
     img = img.convert("RGB")
+
+    img = add_random_colour_spill(img, 0.2)
+    img = add_noise(img, random(0, 0.1))
 
     return img
