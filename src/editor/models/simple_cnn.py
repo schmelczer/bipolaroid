@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -32,4 +33,5 @@ class SimpleCNN(nn.Module):
         x = F.relu(self.conv4(x))
         x = F.relu(self.conv5(x))
         x = self.conv6(x)
-        return x
+        sum = torch.sum(x, dim=(2, 3, 4), keepdim=True)
+        return x / sum

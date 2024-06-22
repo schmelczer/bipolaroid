@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 
 
@@ -48,4 +49,5 @@ class Residual(nn.Module):
         out = self.relu(self.deconv2(out))
         out = self.relu(self.deconv3(out))
 
-        return out
+        sum = torch.sum(out, dim=(2, 3, 4), keepdim=True)
+        return out / sum

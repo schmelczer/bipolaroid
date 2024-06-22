@@ -13,11 +13,11 @@ import json
 
 
 MODELS = {
-    "v1": v1,
+    # "v1": v1,
     "Dummy": Dummy,
     "SimpleCNN": SimpleCNN,
     "Residual": Residual,
-    # "Residual2": Residual2,
+    "Residual2": Residual2,
     "Residual3": Residual3,
 }
 
