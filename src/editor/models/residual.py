@@ -2,9 +2,8 @@ import torch.nn as nn
 
 
 class Residual(nn.Module):
-    def __init__(self, bin_count: int):
+    def __init__(self, **_):
         super(Residual, self).__init__()
-        self.bin_count = bin_count
 
         # Assuming the input histograms are 3D tensors of shape (bin_count, bin_count, bin_count)
         # Convolutional layers to extract features from the histograms

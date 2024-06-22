@@ -4,7 +4,7 @@ import torch
 
 
 class HistogramRestorationNet(nn.Module):
-    def __init__(self, bin_count: int):
+    def __init__(self, **_):
         super(HistogramRestorationNet, self).__init__()
 
         self.conv1 = nn.Conv3d(in_channels=1, out_channels=16, kernel_size=3, padding=1)
