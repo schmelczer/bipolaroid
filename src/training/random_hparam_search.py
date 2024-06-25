@@ -21,7 +21,7 @@ def random_hparam_search(
     timeout_hours: int,
     device: torch.device,
 ) -> None:
-    for _ in range(1):
+    for _ in count():
         current_hyperparameters = {
             k: v.rvs() if hasattr(v, "rvs") else choice(v)
             for k, v in choice(hyperparameters).items()

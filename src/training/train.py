@@ -64,7 +64,7 @@ def train(
                 optimizer.zero_grad()
                 predicted_original = model(edited_histogram.to(device))
                 loss = loss_function(
-                    torch.log(torch.clamp(predicted_original, EPSILON, 1)),
+                    torch.log(predicted_original + EPSILON),
                     original_histogram.to(device),
                 )
 
@@ -101,7 +101,7 @@ def train(
                 ):
                     predicted_original = model(edited_histogram.to(device))
                     epoch_test_loss += loss_function(
-                        torch.log(torch.clamp(predicted_original, EPSILON, 1)),
+                        torch.log(predicted_original + EPSILON),
                         original_histogram.to(device),
                     ).item()
             writer.add_hparams(
