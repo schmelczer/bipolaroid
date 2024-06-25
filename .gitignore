@@ -1,5 +1,4 @@
 __pycache__
-runs
+runs*
 *.log
-models/*.pth
-models/*.json
+saved_models/*
