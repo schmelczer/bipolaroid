@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 from typing import List, Optional, Tuple
 from utils import compute_histogram
-from .random_edit import random_edit
+from operations.random_edit import random_edit
 from PIL import Image
 from tqdm import tqdm
 import logging
