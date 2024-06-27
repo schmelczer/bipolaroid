@@ -14,6 +14,11 @@ import numpy as np
 
 def random_edit(img: Image, seed: int = 42) -> Image:
     np.random.seed(seed)
+
+    ratio_of_unchanged_images = 0.95
+    if np.random.uniform(0, 1) > ratio_of_unchanged_images:
+        return img
+
     img = img.convert("RGB")
 
     img = ImageEnhance.Contrast(img).enhance(random(0.5, 1.5))
