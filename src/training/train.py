@@ -47,6 +47,7 @@ def train(
         loss_function = torch.nn.KLDivLoss(reduction="batchmean").to(device)
 
         for epoch in range(num_epochs):
+            model.print_og_result = True
             epoch_loss = 0
             writer.add_scalar("Actual learning rate", scheduler.get_last_lr()[0], epoch)
             for batch_id, (edited_histogram, original_histogram) in enumerate(
