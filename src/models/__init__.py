@@ -47,7 +47,7 @@ def load_model(path: Path, device: torch.device) -> Tuple[nn.Module, Dict[str, A
     model_path = path.with_suffix(".pth")
     model = create_model(
         type=hyperparameters["model_type"],
-        **hyperparameters,
+        hyperparameters=hyperparameters,
         device=device,
     )
     model.load_state_dict(torch.load(model_path))

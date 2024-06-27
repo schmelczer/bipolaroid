@@ -33,5 +33,10 @@ class SimpleCNN(nn.Module):
         x = F.relu(self.conv4(x))
         x = F.relu(self.conv5(x))
         x = self.conv6(x)
-        sum = torch.sum(x, dim=(2, 3, 4), keepdim=True)
-        return x / sum
+        return self._normalize(x)
+
+    @staticmethod
+    def _normalize(x):
+        x = torch.clamp(x, min=0)
+        x_sum = torch.sum(x, dim=(2, 3, 4), keepdim=True)
+        return x / (x_sum + 1e-5)
