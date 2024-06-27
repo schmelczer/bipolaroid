@@ -36,16 +36,10 @@ def random_hparam_search(
         log_dir = tensorboard_path / get_next_run_name(tensorboard_path)
 
         try:
-            train_data_loader = get_data_loader(
-                train_data_paths, **current_hyperparameters
-            )
-            test_data_loader = get_data_loader(
-                test_data_paths, **current_hyperparameters
-            )
             model = train(
                 hyperparameters=current_hyperparameters,
-                train_data_loader=train_data_loader,
-                test_data_loader=test_data_loader,
+                train_data_paths=train_data_paths,
+                test_data_paths=test_data_paths,
                 max_duration=timedelta(hours=timeout_hours),
                 log_dir=log_dir,
                 use_tqdm=False,

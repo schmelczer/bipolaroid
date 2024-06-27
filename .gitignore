@@ -2,3 +2,4 @@ __pycache__
 runs*
 *.log
 saved_models/*
+train.py
