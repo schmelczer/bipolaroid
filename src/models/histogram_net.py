@@ -28,7 +28,6 @@ class HistogramNet(nn.Module):
         self._use_elu = use_elu
         self._leaky_relu_alpha = leaky_relu_alpha
         self._use_residual = use_residual
-        self.print_og_result = False
 
         self._convolutions = nn.ModuleList(
             self._make_conv_layer(in_channels=in_channels, out_channels=out_channels)
@@ -55,7 +54,7 @@ class HistogramNet(nn.Module):
                 in_channels=in_channels,
                 out_channels=out_channels,
                 kernel_size=self._kernel_size,
-                padding=1,
+                padding=self._kernel_size // 2,
                 bias=False,
             ),
             (
@@ -75,21 +74,22 @@ class HistogramNet(nn.Module):
                 in_channels=channels,
                 out_channels=channels,
                 kernel_size=self._kernel_size,
-                padding=1,
+                padding=self._kernel_size // 2,
                 bias=False,
             ),
             (
                 nn.ELU(self._elu_alpha)
                 if self._use_elu
-                else nn.LeakyReLU(self._leaky_relu_alpha)(
-                    nn.InstanceNorm3d if self._use_instance_norm else nn.BatchNorm3d
-                )(channels)
+                else nn.LeakyReLU(self._leaky_relu_alpha)
+            ),
+            (nn.InstanceNorm3d if self._use_instance_norm else nn.BatchNorm3d)(
+                channels
             ),
             nn.Conv3d(
                 in_channels=channels,
                 out_channels=channels,
                 kernel_size=self._kernel_size,
-                padding=1,
+                padding=self._kernel_size // 2,
                 bias=False,
             ),
             (
@@ -108,7 +108,7 @@ class HistogramNet(nn.Module):
                 in_channels=in_channels,
                 out_channels=out_channels,
                 kernel_size=self._kernel_size,
-                padding=1,
+                padding=self._kernel_size // 2,
             ),
             (
                 nn.ELU(self._elu_alpha)
@@ -129,10 +129,6 @@ class HistogramNet(nn.Module):
         for deconv in self._deconvolutions:
             x = deconv(x)
 
-        if self.print_og_result:
-            logging.info(f"Original result {torch.sum(x)}")
-            self.print_og_result = False
-
         return self._normalize(x)
 
     @staticmethod
@@ -144,7 +140,6 @@ class HistogramNet(nn.Module):
     def _initialize_weights(self):
         for m in self.modules():
             if isinstance(m, (nn.Conv3d, nn.ConvTranspose3d)):
-                # Applying He normal initialization
                 nn.init.kaiming_normal_(m.weight, mode="fan_in", nonlinearity="relu")
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)
