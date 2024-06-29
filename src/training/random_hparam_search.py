@@ -51,8 +51,6 @@ def random_hparam_search(
         except KeyboardInterrupt as e:
             logging.info("Interrupted, stopping")
             break
-        except TimeoutError as e:
-            logging.warning(f"Timeout, aborting experiment")
         except Exception as e:
             logging.error(
                 f"Error with hparams {current_hyperparameters}:\n\t{e}", stack_info=True
