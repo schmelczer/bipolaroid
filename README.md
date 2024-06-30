@@ -4,7 +4,7 @@
 
 > Example of the network enhancing the colour of old digital photographs.
 
-This project trains a neural network for automatically editing the style of digital photographs by learning a mapping from histograms of "bad" images to their aesthetic counterparts. Thus, both the inputs and outputs of the network are 3D RGB histograms: $$\text{bin}_{\text{red}} \times \text{bin}_{\text{green}} \times \text{bin}_{\text{blue}} \to \text{bin}'_{\text{red}} \times \text{bin}'_{\text{green}} \times \text{bin}'_{\text{blue}}$$
+This project trains a neural network for automatically editing the style of digital photographs by learning a mapping from histograms of "bad" images to their aesthetic counterparts. Thus, both the inputs and outputs of the network are 3D RGB histograms: $`\text{bin}_{\text{red}} \times \text{bin}_{\text{green}} \times \text{bin}_{\text{blue}} \to \text{bin}'_{\text{red}} \times \text{bin}'_{\text{green}} \times \text{bin}'_{\text{blue}}`$
 
 By only exposing histograms to the network, we allow it to learn style-tranfer while eliminating the risk of changing the underlying structure of the source image in the process which is a shortcoming of existing deep learning-based approaches [^1] & [^2]. At the same time, non-linear transformations of the RGB colour distribution allow for much greater flexibility than predefined global adjustment tools such as _Brightness_ or _Contrast_.
 
