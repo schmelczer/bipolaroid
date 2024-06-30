@@ -1,54 +1,52 @@
-# Neural photo histogram enhancement
+# Neural Photo Histogram Enhancement
 
 ![](./assets/example-results.jpg)
 
 > Example of the network enhancing the colour of old digital photographs.
 
-This project trains a neural network for automatically editing the style of digital photographs by learning a mapping from histograms of "bad" images to their aesthetic counterparts. Thus, both the inputs and outputs of the network are 3D RGB histograms: $`\text{bin}_{\text{red}} \times \text{bin}_{\text{green}} \times \text{bin}_{\text{blue}} \to \text{bin}'_{\text{red}} \times \text{bin}'_{\text{green}} \times \text{bin}'_{\text{blue}}`$
+This project develops a neural network to automate the style editing of digital photographs by learning to map from histograms of "bad" images to their aesthetically improved counterparts. The network processes and outputs 3D RGB histograms: $`\text{bin}_{\text{red}} \times \text{bin}_{\text{green}} \times \text{bin}_{\text{blue}} \to \text{bin}'_{\text{red}} \times \text{bin}'_{\text{green}} \times \text{bin}'_{\text{blue}}`$
 
-By only exposing histograms to the network, we allow it to learn style-tranfer while eliminating the risk of changing the underlying structure of the source image in the process which is a shortcoming of existing deep learning-based approaches [^1] & [^2]. At the same time, non-linear transformations of the RGB colour distribution allow for much greater flexibility than predefined global adjustment tools such as _Brightness_ or _Contrast_.
+By focusing solely on histograms, the model avoids altering the structural integrity of the image — a common issue with other deep learning-based style transfer methods [^1] & [^2]. This approach allows for flexible, non-linear adjustments to the RGB colour distribution, which surpasses the capabilities of basic global adjustment tools like _Brightness_ or _Contrast_.
 
-## Training overview
+## Training Overview
 
-The neural network has been trained on community-acclaimed photos of Unsplash [^3]. We take each photo and [apply various edits](./src/operations/random_edit.py) to them, these include:
+The training data consists of highly-regarded photos from Unsplash [^3]. We manually apply various edits to these photos, including:
 
-- Non-linearly transforming the brightness (including gamma correction)
-- Adding color spill (colour temperatue & tint)
-- Adjusting the saturation of different colours
-- Changing the contrast
-- Adding noise
+- Non-linear transformations of brightness (gamma correction)
+- Color spill adjustments (colour temperature & tint)
+- Saturation modifications for different colors
+- Contrast changes
+- Noise addition
 
-An example image from the dataset together with 8 random edits applied to it is shown below:
+Below is an example image from the dataset, along with eight random edits:
 
-![a 3 by 3 grid of the original an 8 edited images of a puppy](./assets/input-photos.jpg)
-
-> Image source: https://unsplash.com/photos/long-coated-brown-and-gray-puppy-covered-by-white-jacket-on-persons-lap-PZuIash2jZU
-
-We can simply take the 3D RGB histograms of the photos' pixels. These are the following (with 1-to-1 correspondance with the above):
-
-![a 3 by 3 grid of 3D histograms](./assets/input-histograms.jpg)
-
-> For an interactive version of the histogram, open [inference.ipynb](./src/inference.ipynb).
-
-Using these, the [training task](./src/training/train.py) of the [neural network](./src/models/histogram_net.py) is to predict the "Original" histogram given a single "Edit" histogram. The loss function is KL divergence.
-
-After hyperparameter optimisation, the best performing model produces the following histogram predictions:
-
-![a 3 by 3 grid of predicted 3D histograms](./assets/predicted-histograms.jpg)
-
-As we can see, the predictions closely line up with the original histogram. The model's ability to learn the mapping of "photo enhancing" is further supported by the results we get when appyling the predicted histograms to the edited images.
-
-![a 3 by 3 grid of the 9 predicted styles of an image of a puppy](./assets/predicted-photos.jpg)
+![A 3 by 3 grid of the original and 8 edited images of a puppy](./assets/input-photos.jpg)
 
 > Image source: https://unsplash.com/photos/long-coated-brown-and-gray-puppy-covered-by-white-jacket-on-persons-lap-PZuIash2jZU
 
-We apply the predicted histograms to the source image using Pitie's method [^4].
+The corresponding 3D RGB histograms for these images are shown next:
+
+![A 3 by 3 grid of 3D histograms](./assets/input-histograms.jpg)
+
+> For an interactive exploration of the histogram, visit [inference.ipynb](./src/inference.ipynb).
+
+The [training script](./src/training/train.py) for our [neural network model](./src/models/histogram_net.py) involves predicting the "Original" histogram from a "Modified" histogram, with KL divergence as the loss function.
+
+After extensive hyperparameter optimisation, the top-performing model yields these histogram predictions:
+
+![A 3 by 3 grid of predicted 3D histograms](./assets/predicted-histograms.jpg)
+
+The above predictions align closely with the original histograms, demonstrating the model's efficacy in learning the desired photo enhancement mapping.
+
+![A 3 by 3 grid of the 9 predicted styles of an image of a puppy](./assets/predicted-photos.jpg)
+
+> Image source: https://unsplash.com/photos/long-coated-brown-and-gray-puppy-covered-by-white-jacket-on-persons-lap-PZuIash2jZU
+
+We use Pitie's method to apply the predicted histograms back to the source images [^4].
 
 ## Background
 
-Histogram-based colour transfer has been already explored [^5] to transfer colours between different images but not for enhancing the image's colours.
-
-The input dataset's images "aesthetic goodness" serves as the baseline that the network is aspiring to learn a mapping to from less-aesthetic images. Thus, the high quality of the input images is paramount to the the network's success. The Unsplash [^3] dataset seems ideal for the metrics it provides conveying the included images' metrics, such as whether it was featured or its number of views. We could have chosen alternative datasets such as Laion Aesthetic [^6], however, this idea was quickly discarded due to the dataset's ethically questionable mode of collection.
+While histogram-based color transfer has been explored for color adaptation between images [^5], it has not been widely used for enhancing image aesthetics. Our dataset's "aesthetic quality" serves as a benchmark for the network to learn from visually unappealing images. The Unsplash dataset is chosen for its high-quality metrics, including features and views count, offering an ideal training environment. Other potential datasets like Laion Aesthetic were considered but dismissed due to concerns over the collection methods [^6].
 
 [^1]: [High-Resolution Network for Photorealistic Style Transfer](https://github.com/limingcv/Photorealistic-Style-Transfer)
 [^2]: [Deep Photo Style Transfer](https://github.com/luanfujun/deep-photo-styletransfer)
