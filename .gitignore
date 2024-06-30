@@ -1,5 +1,5 @@
 __pycache__
 runs*
 *.log
-saved_models/*
+saved_models*
 train.py

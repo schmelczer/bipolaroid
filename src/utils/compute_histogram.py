@@ -4,7 +4,7 @@ import numpy as np
 
 def compute_histogram(
     image: Image.Image | np.ndarray,
-    bins: int,
+    bins: int = 16,
     value_range=(0, 256),
     normalize: bool = True,
 ) -> np.ndarray:
