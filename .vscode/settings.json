@@ -1,7 +1,8 @@
 {
   "files.exclude": {
-    "**/__pycache__": true,
+    "**/__pycache__": true
   },
   "editor.formatOnSave": true,
-  "notebook.formatOnCellExecution": true
+  "notebook.formatOnCellExecution": true,
+  "workbench.editorLargeFileConfirmation": 1000
 }
