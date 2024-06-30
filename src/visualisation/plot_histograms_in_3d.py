@@ -6,21 +6,24 @@ import numpy as np
 
 
 def plot_histograms_in_3d(
-    histograms: Dict[str, np.ndarray], histogram_per_row: int = 3
+    histograms: Dict[str, np.ndarray], histograms_per_row: int = 3
 ):
-    cols = min(histogram_per_row, len(histograms))
-    rows = ceil(len(histograms) / histogram_per_row)
+    column_count = min(histograms_per_row, len(histograms))
+    row_count = ceil(len(histograms) / histograms_per_row)
     fig = make_subplots(
-        rows=rows,
-        cols=cols,
-        specs=[[{"type": "scatter3d"} for _ in range(cols)] for _ in range(rows)],
+        rows=row_count,
+        cols=column_count,
+        specs=[
+            [{"type": "scatter3d"} for _ in range(column_count)]
+            for _ in range(row_count)
+        ],
     )
 
     for i, (title, histogram) in enumerate(histograms.items()):
         fig.add_trace(
             _get_3d_scatter_plot_from_histogram(title, histogram),
-            row=(i // (histogram_per_row + 1)) + 1,
-            col=(i % histogram_per_row) + 1,
+            row=(i // histograms_per_row) + 1,
+            col=(i % histograms_per_row) + 1,
         )
 
     scenes = {
@@ -32,7 +35,9 @@ def plot_histograms_in_3d(
         )
         for i in range(1, len(histograms) + 1)
     }
-    fig.update_layout(**scenes)
+    fig.update_layout(**scenes, height=300 * column_count)
+    fig.update_layout()  # You can adjust the height as needed
+
     fig.show()
 
 
