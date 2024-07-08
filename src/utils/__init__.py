@@ -5,3 +5,4 @@ from .kldiv import kldiv
 from .set_up_logging import set_up_logging
 from .serialise_hparams import serialise_hparams
 from .get_device import get_device
+from .delete_corrupt_images import delete_corrupt_images

@@ -6,7 +6,7 @@ import numpy as np
 
 
 def plot_histograms_in_3d(
-    histograms: Dict[str, np.ndarray], histograms_per_row: int = 3
+    histograms: Dict[str, np.ndarray], histograms_per_row: int = 3, height: int = 300
 ):
     column_count = min(histograms_per_row, len(histograms))
     row_count = ceil(len(histograms) / histograms_per_row)
@@ -35,7 +35,7 @@ def plot_histograms_in_3d(
         )
         for i in range(1, len(histograms) + 1)
     }
-    fig.update_layout(**scenes, height=300 * column_count)
+    fig.update_layout(**scenes, height=height * column_count)
     fig.update_layout()  # You can adjust the height as needed
 
     fig.show()
