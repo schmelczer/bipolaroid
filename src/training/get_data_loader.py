@@ -14,7 +14,6 @@ def get_data_loader(
             paths=data,
             edit_count=edit_count,
             bin_count=bin_count,
-            delete_corrupt_images=False,
             cache_path=CACHE_PATH,
         ),
         batch_size=batch_size,

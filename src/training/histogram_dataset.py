@@ -3,7 +3,6 @@ from typing import List, Optional, Tuple
 from utils import compute_histogram
 from operations.random_edit import random_edit
 from PIL import Image
-from tqdm import tqdm
 import logging
 import torch
 from pathlib import Path
@@ -21,7 +20,6 @@ class HistogramDataset(Dataset):
         bin_count: int = 16,
         edit_count: int = 12,
         target_size=(240, 240),
-        delete_corrupt_images: bool = False,
         cache_path: Optional[Path] = None,
     ):
         self._paths = sorted(paths)
@@ -36,20 +34,6 @@ class HistogramDataset(Dataset):
                 self._cache_path
                 / f"{self._bin_count}bins_{self._target_size[0]}x{self._target_size[1]}px"
             )
-
-        if delete_corrupt_images:
-            self._delete_corrupt_images()
-
-    def _delete_corrupt_images(self) -> None:
-        deleted_count = 0
-        for path in tqdm(self._paths):
-            try:
-                Image.open(path)
-            except:
-                logging.warning(f"Failed to open {path}, deleting...")
-                deleted_count += 1
-                path.unlink()
-        logging.info(f"Deleted {deleted_count} corrupt images")
 
     def __len__(self):
         return len(self._paths) * self._edit_count
