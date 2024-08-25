@@ -1,7 +1,9 @@
 import random
 from pathlib import Path
 
-DATA = sorted(Path("/mnt/wsl/PHYSICALDRIVE1/data/unsplash").glob("*.jpg"))
+# DATA = sorted(Path("/mnt/wsl/PHYSICALDRIVE0p1/downloaded-unsplash").glob("*"))
+DATA = sorted(Path("/mnt/wsl/PHYSICALDRIVE0p1/featured").glob("*"))
+
 TRAIN_SIZE = 0.9
 
 CACHE_PATH = Path("/mnt/wsl/PHYSICALDRIVE1/data/cache2")
