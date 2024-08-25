@@ -3,3 +3,5 @@ runs*
 *.log
 saved_models*
 train.py
+data
+bulk
