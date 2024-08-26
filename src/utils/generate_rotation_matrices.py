@@ -53,14 +53,10 @@ def _rotation_matrix(
 
 def _check_rotation_matrix(R: NDArray[np.float64]):
     # Check if the matrix is square
-    if R.shape != (3, 3):
-        raise ValueError("Matrix must be 3x3.")
+    assert R.shape == (3, 3), "Matrix must be 3x3"
 
     # Check orthogonality: R.T * R should be close to the identity matrix
     I = np.eye(3)
-    if not np.allclose(np.dot(R.T, R), I):
-        raise ValueError("allclose")
+    assert np.allclose(np.dot(R.T, R), I)
 
-    # Check determinant: Should be +1
-    if not np.isclose(np.linalg.det(R), 1.0):
-        raise ValueError(f"det {np.linalg.det(R)}")
+    assert np.isclose(np.linalg.det(R), 1.0), f"det {np.linalg.det(R)}"
