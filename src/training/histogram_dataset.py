@@ -56,10 +56,7 @@ class HistogramDataset(Dataset):
         original_idx = idx // self._edit_count
         edit_idx = idx % self._edit_count
 
-        edited_histogram = None
-        original_histogram = None
         cached_data_path = None
-
         if self._cache_path is not None:
             cached_data_path = self._cache_path / str(original_idx) / f"{edit_idx}.bin"
             cached_data_path.parent.mkdir(parents=True, exist_ok=True)
@@ -89,12 +86,10 @@ class HistogramDataset(Dataset):
                     cached_data_path,
                 )
 
-        result = (
+        return (
             torch.tensor(edited_histogram, dtype=torch.float).unsqueeze(0),
             torch.tensor(original_histogram, dtype=torch.float).unsqueeze(0),
         )
-
-        return result
 
     @staticmethod
     def save_2_histograms(tensor1: np.ndarray, tensor2: np.ndarray, path: Path):
