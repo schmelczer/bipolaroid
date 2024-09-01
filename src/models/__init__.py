@@ -51,7 +51,6 @@ def load_model(path: Path, device: torch.device) -> Tuple[nn.Module, Dict[str, A
         device=device,
     )
     model.load_state_dict(torch.load(model_path))
-    model.eval()
     logging.info(f"Parameter count: {sum(p.numel() for p in model.parameters())}")
 
     return model, hyperparameters
