@@ -66,6 +66,7 @@ class HistogramDataset(Dataset):
                 edited_histogram, original_histogram = self.read_2_histograms(
                     cached_data_path, self._bin_count
                 )
+                logging.debug(f"Loaded {cached_data_path} from cache")
             except:
                 logging.warning(f"Failed to load {cached_data_path}, regenerating...")
         else:
@@ -80,11 +81,15 @@ class HistogramDataset(Dataset):
             )
 
             if cached_data_path:
-                self.save_2_histograms(
-                    edited_histogram,
-                    original_histogram,
-                    cached_data_path,
-                )
+                try:
+                    self.save_2_histograms(
+                        edited_histogram,
+                        original_histogram,
+                        cached_data_path,
+                    )
+                    logging.debug(f"Saved {cached_data_path} to cache")
+                except:
+                    logging.warning(f"Failed to save {cached_data_path}")
 
         return (
             torch.tensor(edited_histogram, dtype=torch.float).unsqueeze(0),
