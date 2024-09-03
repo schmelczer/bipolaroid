@@ -10,10 +10,9 @@ import torch
 from .get_data_loader import get_data_loader
 from ray import train
 from ray.train import Checkpoint
-import os
 import tempfile
-from more_itertools import distribute
-
+import logging
+from more_itertools import divide
 
 EPSILON = 1e-5
 
@@ -24,18 +23,13 @@ def train_with_ray_factory(
     device: torch.device,
     log_dir: Path,
 ):
+
     def train_with_ray(hyperparameters: Dict[str, Any]):
         def inner(
             hyperparameters: Dict[str, Any],
             chunk_count: int,
             **_,
         ) -> torch.nn.Module:
-            train_data_loader = get_data_loader(train_data_paths, **hyperparameters)
-            test_data_loader = get_data_loader(
-                test_data_paths, **{**hyperparameters, "edit_count": 1}
-            )
-            examples = next(iter(test_data_loader))
-
             model, optimizer, scheduler, start_chunk_id, run_name = (
                 load_or_create_state(
                     device=device,
@@ -45,12 +39,25 @@ def train_with_ray_factory(
             )
             loss_function = torch.nn.KLDivLoss(reduction="batchmean").to(device)
 
+            train_data_loaders = [
+                get_data_loader(paths, **hyperparameters)
+                for paths in list(divide(chunk_count, train_data_paths))[
+                    start_chunk_id:-1
+                ]
+            ]
+            test_data_loader = get_data_loader(
+                test_data_paths, **{**hyperparameters, "edit_count": 1}
+            )
+            examples = next(iter(test_data_loader))
+
             with SummaryWriter(log_dir=log_dir / run_name) as writer:
                 writer.add_graph(model, examples[0].to(device))
-                for chunk_id, chunk in enumerate(
-                    distribute(chunk_count, train_data_loader)[start_chunk_id:-1],
+                logging.info(f"Starting training with {run_name}")
+                for chunk_id, train_data_loader in enumerate(
+                    train_data_loaders,
                     start=start_chunk_id,
                 ):
+                    logging.info(f"Starting chunk {chunk_id}")
                     chunk_training_loss = 0
                     writer.add_scalar(
                         "Actual learning rate",
@@ -58,12 +65,9 @@ def train_with_ray_factory(
                         chunk_id,
                     )
                     for batch_id, (edited_histogram, original_histogram) in enumerate(
-                        chunk
+                        train_data_loader
                     ):
-                        global_step = (
-                            chunk_id * (len(train_data_loader) // chunk_count)
-                            + batch_id
-                        )
+                        global_step = chunk_id * len(train_data_loader) + batch_id
                         optimizer.zero_grad()
                         predicted_original = model(edited_histogram.to(device))
                         loss = loss_function(
@@ -127,6 +131,7 @@ def train_with_ray_factory(
                             {
                                 "chunk_test_loss": chunk_test_loss,
                                 "chunk_training_loss": chunk_training_loss,
+                                "chunk_id": chunk_id,
                             },
                             checkpoint=Checkpoint.from_directory(temp_checkpoint_dir),
                         )
