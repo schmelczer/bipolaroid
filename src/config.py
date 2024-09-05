@@ -9,7 +9,7 @@ TRAIN_SIZE = 0.95
 CACHE_PATH = Path("/mnt/wsl/PHYSICALDRIVE2/data/cache")
 MODELS_PATH = Path("/home/andras/projects/bipolaroid/saved_models")
 LOGS_PATH = Path("/home/andras/projects/bipolaroid/logs")
-RUNS_PATH = Path("/home/andras/projects/bipolaroid/runs")
+RUNS_PATH = Path("/home/andras/projects/bipolaroid/runs2")
 
 
 for path in [CACHE_PATH, MODELS_PATH, LOGS_PATH, RUNS_PATH]:

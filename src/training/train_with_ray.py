@@ -15,6 +15,7 @@ import logging
 from more_itertools import divide
 
 EPSILON = 1e-5
+EXAMPLE_COUNT = 5
 
 
 def train_with_ray_factory(
@@ -30,6 +31,12 @@ def train_with_ray_factory(
             chunk_count: int,
             **_,
         ) -> torch.nn.Module:
+            import matplotlib
+
+            matplotlib.use(
+                "agg"
+            )  # avoid "UserWarning: Starting a Matplotlib GUI outside of the main thread will likely fail" warnings
+
             model, optimizer, scheduler, start_chunk_id, run_name = (
                 load_or_create_state(
                     device=device,
@@ -48,7 +55,7 @@ def train_with_ray_factory(
             test_data_loader = get_data_loader(
                 test_data_paths, **{**hyperparameters, "edit_count": 1}
             )
-            examples = next(iter(test_data_loader))
+            examples = next(iter(test_data_loader))[:EXAMPLE_COUNT]
 
             with SummaryWriter(log_dir=log_dir / run_name) as writer:
                 writer.add_graph(model, examples[0].to(device))
